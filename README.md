@@ -1,6 +1,6 @@
-#Real-time locations editor example
+# Real-time locations editor example
 
-##Steps to run
+## Steps to run
 
 * Clone repository.
 * Have SQL server running on port 3306  (or [configure](config/config.json) your own).
@@ -12,7 +12,7 @@ npm run create-db
 npm start
 ```
 
-##Application details
+## Application details
 
 * React application for view.
 * Mapbox GL JS for maps.
@@ -20,15 +20,15 @@ npm start
 * SQL database.
 * Sequelize ORM
 
-##Challenges
+## Challenges
 
-###Using Mapbox Api in React
+### Using Mapbox Api in React
 
 The approach I like to take when working with external Api's in React is first to create an abstraction of the Api using React components.
 
 In this case we have 2 classes from the Mapbox Api: **Map** and **Marker**.
 
-```
+```jsx
 const map = new mapboxgl.Map({
     container: el,
     style: 'mapbox://styles/mapbox/streets-v10',
@@ -44,7 +44,7 @@ const marker = new mapboxgl.Marker({
 ```
 
 Implementing those classes as React components looks something like this:
-```
+```jsx
 class Map extends React.PureComponent {
     container = React.createRef();
 
@@ -109,7 +109,7 @@ Now that we have both components the problem is how to pass the Mapbox Map insta
 
 We can declare a context for that:
 
-```
+```jsx
 const MapContext = React.createContext();
 
 const withMap = Component =>  props => (
@@ -120,7 +120,7 @@ const withMap = Component =>  props => (
 ```
 
 And then modifying our components like this:
-```
+```jsx
 class Map extends React.PureComponent{
     // component code
     
@@ -143,7 +143,7 @@ const Marker = withMap(class extends React.PureComponent{
 With this our components will be connected internally, the Marker component can read the map instance from the Map component as long as it is it's parent.
 
 Now we can use the Mapbox Api just using React components like this:
-```
+```jsx
 class App extends React.PureComponent{
     state = {
         locations:[
@@ -169,7 +169,7 @@ class App extends React.PureComponent{
 }
 ``` 
 
-###Implementing real time updates
+### Implementing real time updates
 
 I decided to use Server-sent events over webSockets because it's easier to implement, and works perfectly for this simple application.
 
@@ -178,7 +178,7 @@ To implement we have to declare:
 * A route in our server which will setup a new connection.
 * A function to send a message to all the client connections.
 
-```
+```jsx
 const connections = [];
 
 router.get('/subscribe', function(req, res) {
@@ -197,7 +197,7 @@ function sendMessage(payload) {
 }
 ```
 And then we can send a message where we want:
-```
+```jsx
 router.post('/', async function(req, res, next) {
     //create location code
     
@@ -209,7 +209,7 @@ router.post('/', async function(req, res, next) {
 });
 ```
 The implementation in the client looks something like this:
-```
+```jsx
     const source = new EventSource('/subscribe');
     source.onmessage = e => {
         const data = JSON.parse(e.data);
