@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "create-db":"node_modules/.bin/sequelize db:create && node_modules/.bin/sequelize db:migrate ",
+    "create-db": "node_modules/.bin/sequelize db:create && node_modules/.bin/sequelize db:migrate ",
     "server-start": "PORT=3001 node ./bin/www",
     "client-start": "cd client && npm start",
-    "start": "npm-run-all -p server-start client-start"
+    "start": "npm-run-all -p server-start client-start",
+    "postinstall": "cd client && npm install"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
