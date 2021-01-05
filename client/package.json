@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "color": "^3.0.0",
     "hoist-non-react-statics": "^2.5.5",
     "mapbox-gl": "^0.46.0",
